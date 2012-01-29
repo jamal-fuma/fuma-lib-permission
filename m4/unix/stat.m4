@@ -4,7 +4,6 @@ AC_CHECK_HEADERS([sys/types.h sys/stat.h])
 
 dnl we need stat(2) and chmod(2) for permissions checks
 AC_FUNC_STAT
-AC_FUNC_CHMOD
 
 dnl we need stuct stat.st_mode for permissions checks
 AC_CHECK_MEMBER(

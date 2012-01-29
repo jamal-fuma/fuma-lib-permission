@@ -1,0 +1,1 @@
+fuma-lib-permission-0.0.1
