@@ -31,7 +31,7 @@ namespace Fuma
             class PermissionImpl : public PermissionInterface
             {
             public:
-                    PermissionImpl() {}
+                    PermissionImpl(const PermissionValue & value) :
 
                     PermissionImpl(const PermissionImpl & rhs) :
                              m_value(rhs.m_value) {}
@@ -90,11 +90,12 @@ namespace Fuma
                     PermissionInterface & m_impl;
             };
 
-            template <typename Trait>
+            template <typename Trait,typename ValueType>
             class PermissionType
             {
                 public:
-                    typedef typename Trait::value_type value_type;
+                    typedef typename ValueType value_type;
+
                     PermissionType() : m_value(Trait()) {}
                     ~PermissionType() {}
 
@@ -112,7 +113,7 @@ namespace Fuma
                     }
                     
                     // assignment api    
-                    value_type* address_of(const value_type & val) const {
+                    value_type* address_of() const {
                         return & m_value;
                     }
 

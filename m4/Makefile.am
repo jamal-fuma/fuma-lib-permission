@@ -10,9 +10,8 @@ EXTRA_DIST= \
         unix/username.m4 \
         \
         windows.m4 \
-        windows/username.m4\
+        windows/file_attributes.m4\
         windows/username.m4\
         \
         programs/banner.m4 \
-        programs/config.m4 \
         programs/toolchain.m4

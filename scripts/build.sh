@@ -16,7 +16,7 @@ autoreconf -vfi
 mkdir -p build-native/root;
 PREFIX="`pwd`/build-native/root";
 cd build-native;
-make distcheck
+#make distcheck
 ../configure --prefix=${PREFIX} --enable-maintainer-mode
 
 make distcheck

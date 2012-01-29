@@ -1,63 +1,43 @@
-
 #include "config.h"
-
-#include "Permission.hpp"
 
 #if defined(HAVE_WINBASE_H)
 #include <winbase.h>
 #endif //defined  HAVE_WINBASE_H
- 
 
-
-
+#include "Permission.hpp"
+#include "Windows.hpp"
 
 namespace Fuma
 {
-        namespace FileSystem
+    namespace FileSystem
+    {
+        namespace Permission
         {
-                namespace Permission
+            namespace Windows
+            {
+                struct value_type
                 {
-                     struct windows_permission_trait
-                     {
-                        typedef DWORD value_type;
+                    DWORD value;
+                };
+           } // Fuma::FileSystem::Permission::Windows
+        } // Fuma::FileSystem::Permission
+    } // Fuma::FileSystem
+} // Fuma
 
-                        static int compare(const value_type & lhs, const value_type & rhs) {
-                                return (lhs - rhs);
-                        }
+using Fuma::FileSystem::Permission::Windows::value_type;
 
-                        static bool is_directory(const value_type & value) {
-                                return (value & FILE_ATTRIBUTE_DIRECTORY);
-                        }
+int Fuma::FileSystem::Permission::Windows::permission_trait::compare(const value_type & lhs, const value_type & rhs) {
+        return (lhs.value - rhs.value);
+}
 
-                        static bool is_file() {
-                                return !(value & FILE_ATTRIBUTE_DIRECTORY); 
-                        }
+bool Fuma::FileSystem::Permission::Windows::permission_trait::is_directory(const value_type & lhs) {
+        return (lhs.value & FILE_ATTRIBUTE_DIRECTORY);
+}
 
-                        static bool exists(const value_type & rhs) {
-                                return  (rhs != INVALID_FILE_ATTRIBUTES);
-                        }
+bool Fuma::FileSystem::Permission::Windows_permission_trait::is_file(const value_type & lhs) {
+        return !(lhs.value & FILE_ATTRIBUTE_DIRECTORY);
+}
 
-                     };
-                     
-                     typedef PermissionType< windows_permission_trait > PermissionTrait;
-                 
-                     struct PermissionValue
-                     {
-                         PermissionTrait value;
-                         PermissionValue(const Permission & val) : value(val) {}
-                     };
-
-                     bool is_directory(const PermissionValue & rhs) { 
-                         return rhs.value.is_directory();
-                     }
-
-                     bool is_file(const PermissionValue & rhs) {
-                         return rhs.value.is_file();
-                     }
-
-                     bool exists(const PermissionValue & rhs) { 
-                         return rhs.value.exists();
-                     }
-                }
-          }
- }
+bool Fuma::FileSystem::Permission::windows_permission_trait::exists(const value_type & lhs) {
+        return  (lhs.value != INVALID_FILE_ATTRIBUTES);
+}
