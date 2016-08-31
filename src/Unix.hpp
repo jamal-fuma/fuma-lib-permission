@@ -9,16 +9,7 @@ namespace Fuma
         {
             namespace Unix
             {
-                // forward declartion of platform value_type
-                struct value_type;
-
-                struct permission_trait
-                {
-                    static int compare(const value_type & lhs, const value_type & rhs) ;
-                    static bool is_directory(const value_type & value);
-                    static bool is_file(const value_type & value);
-                    static bool exists(const value_type & rhs);
-                };   
+                struct permission_trait;
             } // Fuma::FileSystem::Permission::Unix
         } // Fuma::FileSystem::Permission
     } // Fuma::FileSystem

@@ -19,29 +19,45 @@ namespace Fuma
         {
             namespace Unix
             {
-                struct value_type;
+                struct type_trait
                 {
-                    mode_t value;
+                    typedef mode_t value_type;
+
+                    typedef mode_t* pointer_type;
+                    typedef const mode_t* const_pointer_type;
+
+                    typedef mode_t & reference_type;
+                    typedef const mode_t & const_reference_type;
+
+                    static int compare(const value_type & lhs, const value_type & rhs)
+                    {
+                        return (lhs - rhs);
+                    }
+
+                    static is_directory(const value_type & lhs)
+                    {
+                        return S_ISDIR(lhs);
+                    }
+
+                    static is_file(const value_type & lhs)
+                    {
+                        return S_ISREG(lhs);
+                    }
+
+                    static exists(const value_type & lhs)
+                    {
+                        return (S_ISREG(lhs) || S_ISDIR(lhs));
+                    }
+
+                    static pointer_type address_of(const value_type & lhs)
+                    {
+                        return ( &lhs);
+                    }
                 };
-            } // Fuma::FileSystem::Permission::Unix
+
+           } // Fuma::FileSystem::Permission::Unix
         } // Fuma::FileSystem::Permission
     } // Fuma::FileSystem
 } // Fuma
 
-using Fuma::FileSystem::Permission::Unix::value_type;
 
-int Fuma::FileSystem::Permission::Unix::permission_trait::compare(const value_type & lhs, const value_type & rhs) {
-        return (lhs.value - rhs.value);
-}
-
-bool Fuma::FileSystem::Permission::Unix::permission_trait::is_directory(const value_type & lhs) {
-        return S_ISDIR(lhs.value);
-}
-
-bool Fuma::FileSystem::Permission::Unix::permission_trait::is_file(const value_type & lhs) {
-        return S_ISREG(lhs.value);
-}
-
-bool Fuma::FileSystem::Permission::Unix::permission_trait::exists(const value_type & lhs) {
-        return (S_ISREG(lhs.value) || S_ISDIR(lhs.value));
-}

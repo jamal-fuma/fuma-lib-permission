@@ -1,25 +1,35 @@
 #include "config.h"
 #include "Permission.hpp"
 
+namespace Permission = Fuma::FileSystem::Permission;
+
 #if defined(ENABLE_UNIX_BUILD)
-        namespace Platform = Fuma::FileSystem::Permission::Unix;
         #include "Unix.hpp"
+        namespace Platform = Fuma::FileSystem::Permission::Unix;
+        typedef Permission::PermissionType< Platform::permission_trait > PermissionTrait;
 
 #elif defined(ENABLE_WINDOWS_BUILD)
-        namespace Platform = Fuma::FileSystem::Permission::Windows;
         #include "Windows.hpp"
+        namespace Platform = Fuma::FileSystem::Permission::Windows;
+        typedef Permission::PermissionType< Platform::permission_trait > PermissionTrait;
 #else
         #error "Unsupported Platform"
 #endif
 
-typedef PermissionType< Platform::permission_trait, Platform::value_type > PermissionTrait;
-
-struct PermissionValue
+namespace Fuma
 {
-    PermissionTrait value;
-    PermissionValue(const Permission & val) : value(val) {}
-};
-
+    namespace FileSystem
+    {
+        namespace Permission
+        {
+            struct PermissionValue
+            {
+                PermissionTrait value;
+            };
+        } // Fuma::FileSystem::Permission
+    } // Fuma::FileSystem
+} // Fuma
+#
 bool
 Fuma::FileSystem::Permission::exists(const PermissionValue & rhs)
 {

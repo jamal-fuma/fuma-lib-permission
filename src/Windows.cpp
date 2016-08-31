@@ -17,27 +17,42 @@ namespace Fuma
             {
                 struct value_type
                 {
-                    DWORD value;
+                    typedef DWORD value_type;
                 };
+
+                struct pointer_type
+                {
+                    typedef DWORD* pointer_type;
+                };
+
            } // Fuma::FileSystem::Permission::Windows
         } // Fuma::FileSystem::Permission
     } // Fuma::FileSystem
 } // Fuma
 
 using Fuma::FileSystem::Permission::Windows::value_type;
+using Fuma::FileSystem::Permission::Windows::pointer_type;
 
 int Fuma::FileSystem::Permission::Windows::permission_trait::compare(const value_type & lhs, const value_type & rhs) {
-        return (lhs.value - rhs.value);
+        return (lhs - rhs);
 }
 
 bool Fuma::FileSystem::Permission::Windows::permission_trait::is_directory(const value_type & lhs) {
-        return (lhs.value & FILE_ATTRIBUTE_DIRECTORY);
+        return (lhs & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 bool Fuma::FileSystem::Permission::Windows_permission_trait::is_file(const value_type & lhs) {
-        return !(lhs.value & FILE_ATTRIBUTE_DIRECTORY);
+        return !(lhs & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-bool Fuma::FileSystem::Permission::windows_permission_trait::exists(const value_type & lhs) {
-        return  (lhs.value != INVALID_FILE_ATTRIBUTES);
+bool Fuma::FileSystem::Permission::Windows::permission_trait::exists(const value_type & lhs) {
+        return  (lhs != INVALID_FILE_ATTRIBUTES);
+}
+
+bool Fuma::FileSystem::Permission::Windows::permission_trait::exists(const value_type & lhs) {
+        return  (lhs != INVALID_FILE_ATTRIBUTES);
+}
+
+pointer_type Fuma::FileSystem::Permission::Windows::permission_trait::address_of(const value_type & lhs){
+        return ( &lhs);
 }
